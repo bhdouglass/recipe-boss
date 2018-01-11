@@ -109,7 +109,7 @@ export default {
                     let parts = ingredient.split(' ');
                     if (parts.length > 1) {
                         let part1 = parts.shift();
-                        if (!isNaN(part1)) {
+                        if (!isNaN(part1.replace('/', ''))) {
                             ingredient = `<b>${part1}</b> ${parts.join(' ')}`;
                         }
                     }

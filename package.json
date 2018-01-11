@@ -11,6 +11,7 @@
     "build": "node webpack/build.js"
   },
   "dependencies": {
+    "axios": "^0.17.1",
     "font-awesome": "^4.7.0",
     "uuid": "^3.1.0",
     "vue": "^2.5.2",

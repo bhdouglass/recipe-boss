@@ -26,6 +26,7 @@
                         :src="result.image"
                         :alt="result.title"
                         @click="$router.push({name: 'view', params: {id: result.id}})"
+                        v-if="result.image"
                     />
 
                     <div class="p-matrix__content">

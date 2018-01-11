@@ -15,6 +15,13 @@
                 </div>
 
                 <div class="p-form__group">
+                    <label for="source" class="p-form__label">Source</label>
+                    <input type="url" id="source" class="p-form__control" :disabled="saving" v-model="recipe.source" />
+                </div>
+
+                <a @click="extract()" class="p-button--positive" v-if="is_new && !error">Extract Recipe</a>
+
+                <div class="p-form__group">
                     <label for="description" class="p-form__label">Description</label>
                     <textarea id="description" class="p-form__control" :disabled="saving" v-model="recipe.description" rows="2"></textarea>
                 </div>
@@ -45,11 +52,6 @@
                 </div>
 
                 <div class="p-form__group">
-                    <label for="source" class="p-form__label">Source</label>
-                    <input type="url" id="source" class="p-form__control" :disabled="saving" v-model="recipe.source" />
-                </div>
-
-                <div class="p-form__group">
                     <label for="image" class="p-form__label">Image</label>
                     <input type="url" id="image" class="p-form__control" :disabled="saving" v-model="recipe.image" />
                 </div>
@@ -72,6 +74,7 @@
 
 <script>
 import storage from '@/storage';
+import api from '@/api';
 
 export default {
     name: 'Edit',
@@ -81,6 +84,7 @@ export default {
             recipe: {},
             saving: false,
             loading: false,
+            error: false,
         };
     },
     created() {
@@ -104,6 +108,18 @@ export default {
                 this.saving = false;
                 this.$router.push({name: 'view', params: {id: recipe.id}});
             });
+        },
+        extract() {
+            if (this.recipe.source) {
+                this.loading = true;
+                api.extract(this.recipe.source).then((recipe) => {
+                    this.recipe = recipe;
+                    this.loading = false;
+                }).catch(() => {
+                    this.loading = false;
+                    this.error = true;
+                });
+            }
         },
     },
 };
