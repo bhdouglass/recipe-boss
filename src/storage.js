@@ -1,64 +1,129 @@
 import uuid from 'uuid/v4';
+import RemoteStorage from 'remotestoragejs';
+import EventBus from './bus';
 
-let metadata = window.localStorage.getItem('metadata');
-if (metadata) {
-    metadata = JSON.parse(metadata);
-}
-else {
-    metadata = {};
-}
+let Recipe = {
+    name: 'recipes',
+    builder: function(privateClient) {
+        privateClient.declareType('recipe', {
+            type: 'object',
+            properties: {
+                title: {type: 'string'},
+                source: {type: 'string'},
+                description: {type: 'string'},
+                ingredients: {type: 'string'},
+                directions: {type: 'string'},
+                notes: {type: 'string'},
+                prep_time: {type: 'number'},
+                total_time: {type: 'number'},
+                image: {type: 'string'},
+                rating: {type: 'number'},
+            },
+            required: [
+                'title',
+                'ingredients',
+            ],
+        });
 
-// Implementing these as promises to easily swap out the backend later
-export default {
-    save(recipe) {
-        return new Promise((resolve) => {
-            if (!recipe.id) {
-                recipe.id = uuid();
-            }
+        return {
+            exports: {
+                init: () => {
+                    privateClient.cache('');
+                },
 
-            window.localStorage.setItem(recipe.id, JSON.stringify(recipe));
+                on: privateClient.on,
 
+                add: (recipe) => {
+                    return privateClient.storeObject('recipe', recipe.id, recipe);
+                },
+
+                find: privateClient.getObject.bind(privateClient),
+
+                delete: privateClient.remove.bind(privateClient),
+
+                list: () => {
+                    return privateClient.getAll('');
+                },
+            },
+        };
+    },
+};
+
+let remoteStorage = new RemoteStorage({
+    changeEvents: {local: true, remote: true},
+    modules: [Recipe],
+    logging: (process.env.NODE_ENV == 'development'),
+});
+remoteStorage.access.claim('recipes', 'rw');
+remoteStorage.setApiKeys({
+    dropbox: process.env.DROPBOX_KEY,
+    googledrive: process.env.GOOGLE_DRIVE_KEY,
+});
+
+let metadata = {};
+function loadMetadata() {
+    return remoteStorage.recipes.list().then((recipes) => {
+        Object.values(recipes).forEach((recipe) => {
             metadata[recipe.id] = {
                 id: recipe.id,
                 image: recipe.image,
                 title: recipe.title,
                 description: recipe.description,
             };
+        });
 
-            window.localStorage.setItem('metadata', JSON.stringify(metadata));
-            resolve(recipe);
+        return metadata;
+    });
+}
+
+let readyPromise = loadMetadata();
+
+remoteStorage.on('disconnected', () => {
+    metadata = {};
+
+    EventBus.$emit('reload');
+});
+
+remoteStorage.on('connected', () => {
+    readyPromise = loadMetadata().then(() => {
+        EventBus.$emit('reload');
+    });
+});
+
+remoteStorage.recipes.on('change', () => {
+    readyPromise = loadMetadata().then(() => {
+        EventBus.$emit('reload');
+    });
+});
+
+export default {
+    remoteStorage: remoteStorage,
+
+    save(recipe) {
+        let id = uuid();
+        recipe.id = id;
+
+        metadata[recipe.id] = {
+            id: recipe.id,
+            image: recipe.image,
+            title: recipe.title,
+            description: recipe.description,
+        };
+
+        return remoteStorage.recipes.add(recipe).then(() => {
+            return recipe;
         });
     },
     remove(id) {
-        return new Promise((resolve) => {
-            window.localStorage.removeItem(id);
+        delete metadata[id];
 
-            delete metadata[id];
-            window.localStorage.setItem('metadata', JSON.stringify(metadata));
-
-            resolve();
-        });
+        return remoteStorage.recipes.delete(id);
     },
     find(id) {
-        return new Promise((resolve, reject) => {
-            let recipe = window.localStorage.getItem(id);
-            try {
-                recipe = JSON.parse(recipe);
-            }
-            catch (e) {
-                recipe = null;
-            }
-
-            if (recipe) {
-                resolve(recipe);
-            }
-            else {
-                reject();
-            }
-        });
+        return remoteStorage.recipes.find(id);
     },
     search(term) {
-        return new Promise((resolve) => {
+        return readyPromise.then(() => {
             let results = [];
             let metadataValues = Object.values(metadata);
             for (let i = 0; i < metadataValues.length; i++) {
@@ -88,7 +153,7 @@ export default {
                 return 0;
             });
 
-            resolve(results);
+            return results;
         });
     },
 };

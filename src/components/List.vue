@@ -58,6 +58,10 @@ export default {
     },
     created() {
         this.search();
+
+        this.$bus.$on('reload', () => {
+            this.search();
+        });
     },
     methods: {
         search() {

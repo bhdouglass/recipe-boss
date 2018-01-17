@@ -12,7 +12,7 @@ function parseTime(str) {
 
 export default {
     extract(url) {
-        return axios.get(`https://choppingboard.recipes/api/v0/recipe?key=${process.env.API_KEY}&q=${url}`).then((res) => {
+        return axios.get(`https://choppingboard.recipes/api/v0/recipe?key=${process.env.CHOPPING_BOARD_KEY}&q=${url}`).then((res) => {
             return {
                 title: res.data.name,
                 description: res.data.copyrighted ? res.data.copyrighted.description : '',

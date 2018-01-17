@@ -1,5 +1,10 @@
 <template>
     <div class="row">
+        <div class="back">
+            <router-link :to="{name: 'list'}"><i class="fa fa-chevron-left"></i></router-link>
+            <router-link :to="{name: 'list'}">Back</router-link>
+        </div>
+
         <div class="row center" v-if="loading">
             <i class="fa fa-spinner fa-spin fa-4x"></i>
         </div>
@@ -80,11 +85,15 @@ export default {
         };
     },
     created() {
+        this.loading = true;
         this.load();
+
+        this.$bus.$on('reload', () => {
+            this.load();
+        });
     },
     methods: {
         load() {
-            this.loading = true;
             storage.find(this.$route.params.id).then((recipe) => {
                 this.recipe = recipe;
                 this.loading = false;
@@ -92,6 +101,7 @@ export default {
             // TODO error handling
         },
         remove() {
+            // TODO confirm delete
             storage.remove(this.$route.params.id).then(() => {
                 this.$router.push({name: 'list'});
             });

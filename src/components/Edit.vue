@@ -1,5 +1,10 @@
 <template>
     <div class="row">
+        <div class="back">
+            <router-link :to="{name: 'list'}"><i class="fa fa-chevron-left"></i></router-link>
+            <router-link :to="{name: 'list'}">Back</router-link>
+        </div>
+
         <h1 v-if="is_new">New Recipe</h1>
         <h1 v-else>Edit Recipe</h1>
 
@@ -126,4 +131,11 @@ export default {
 </script>
 
 <style scoped>
+.row {
+    margin-top: 0.5em;
+}
+
+h1 {
+    margin-top: 2rem;
+}
 </style>

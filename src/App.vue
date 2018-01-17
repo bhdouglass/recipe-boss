@@ -31,10 +31,43 @@
 </template>
 
 <script>
+import Vue from 'vue';
+import Widget from 'remotestorage-widget';
+
+import storage from './storage';
+
 export default {
     name: 'app',
+    created() {
+        Vue.nextTick().then(() => {
+            let widget = new Widget(storage.remoteStorage);
+            widget.attach();
+        });
+    },
 };
 </script>
 
 <style>
+#remotestorage-widget {
+    margin-top: 0;
+    position: absolute;
+    top: 1em;
+    right: 0;
+}
+
+#remotestorage-widget div {
+    margin-top: 0;
+}
+
+#remotestorage-widget .rs-button {
+    margin-left: 0;
+}
+
+#remotestorage-widget .rs-button-small {
+    height: 40px;
+}
+
+#remotestorage-widget .rs-closed {
+    margin-top: -22px;
+}
 </style>
