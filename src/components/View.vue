@@ -27,6 +27,8 @@
                     <li class="p-inline-list__item" v-if="recipe.total_time">
                         Total Time: {{recipe.total_time}}
                     </li>
+                </ul>
+                <ul class="p-inline-list--middot">
                     <li class="p-inline-list__item" v-if="recipe.source">
                         <a :href="recipe.source">
                             Source <i class="fa fa-external-link"></i>

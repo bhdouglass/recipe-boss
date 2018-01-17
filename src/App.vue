@@ -68,6 +68,6 @@ export default {
 }
 
 #remotestorage-widget .rs-closed {
-    margin-top: -22px;
+    margin-top: -20px;
 }
 </style>
