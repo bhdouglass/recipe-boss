@@ -23,7 +23,7 @@
                 <li v-for="result in results" class="p-matrix__item">
                     <img
                         class="p-matrix__img"
-                        :src="result.image"
+                        :src="result.proxyImage"
                         :alt="result.title"
                         @click="$router.push({name: 'view', params: {id: result.id}})"
                         v-if="result.image"
@@ -67,7 +67,10 @@ export default {
         search() {
             this.loading = true;
             storage.search(this.term).then((results) => {
-                this.results = results;
+                this.results = results.map((result) => {
+                    result.proxyImage = `https://images.weserv.nl/?url=${encodeURI(result.image).replace('http://', '').replace('https://', '')}`;
+                    return result;
+                });
                 this.loading = false;
             });
         },

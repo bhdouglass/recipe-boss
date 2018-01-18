@@ -12,7 +12,7 @@
         <div v-if="!loading">
             <div class="p-card">
                 <header class="p-card__header" v-if="recipe.image">
-                    <img :src="recipe.image" :alt="recipe.title">
+                    <img :src="image" :alt="recipe.title">
                 </header>
 
                 <h3 class="p-card__title">
@@ -141,6 +141,14 @@ export default {
             }
 
             return directions;
+        },
+        image() {
+            let image = '';
+            if (this.recipe && this.recipe.image) {
+                image = `https://images.weserv.nl/?url=${encodeURI(this.recipe.image).replace('http://', '').replace('https://', '')}`;
+            }
+
+            return image;
         },
     },
 };
