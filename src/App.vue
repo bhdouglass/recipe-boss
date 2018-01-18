@@ -23,6 +23,9 @@
                         <li class="p-footer__item">
                             <a class="p-footer__link" href="http://bhdouglass.com" target="_blank">Created by Brian Douglass</a>
                         </li>
+                        <li class="p-footer__item">
+                            <a class="p-footer__link" href="https://github.com/bhdouglass/recipe-manager" target="_blank">Fork this on Github</a>
+                        </li>
                     </ul>
                 </nav>
             </div>
