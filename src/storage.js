@@ -53,6 +53,7 @@ let remoteStorage = new RemoteStorage({
     changeEvents: {local: true, remote: true},
     modules: [Recipe],
     logging: (process.env.NODE_ENV == 'development'),
+    cache: false, // TODO figure out why caching doesn't update with getAll
 });
 remoteStorage.access.claim('recipes', 'rw');
 remoteStorage.setApiKeys({
@@ -64,12 +65,14 @@ let metadata = {};
 function loadMetadata() {
     return remoteStorage.recipes.list().then((recipes) => {
         Object.values(recipes).forEach((recipe) => {
-            metadata[recipe.id] = {
-                id: recipe.id,
-                image: recipe.image,
-                title: recipe.title,
-                description: recipe.description,
-            };
+            if (recipe.id) {
+                metadata[recipe.id] = {
+                    id: recipe.id,
+                    image: recipe.image,
+                    title: recipe.title,
+                    description: recipe.description,
+                };
+            }
         });
 
         return metadata;
@@ -100,8 +103,10 @@ export default {
     remoteStorage: remoteStorage,
 
     save(recipe) {
-        let id = uuid();
-        recipe.id = id;
+        if (!recipe.id) {
+            let id = uuid();
+            recipe.id = id;
+        }
 
         metadata[recipe.id] = {
             id: recipe.id,
