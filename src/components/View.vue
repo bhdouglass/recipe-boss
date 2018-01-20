@@ -118,15 +118,15 @@ export default {
                 });
 
                 ingredients = ingredients.map((ingredient) => {
-                    let parts = ingredient.split(' ');
-                    if (parts.length > 1) {
-                        let part1 = parts.shift();
-                        if (!isNaN(part1.replace('/', ''))) {
-                            ingredient = `<b>${part1}</b> ${parts.join(' ')}`;
+                    let parts = ingredient.split(' ').map((part) => {
+                        if (!isNaN(part.replace('/', ''))) {
+                            return `<b>${part}</b>`;
                         }
-                    }
 
-                    return ingredient;
+                        return part;
+                    });
+
+                    return parts.join(' ');
                 });
             }
 
