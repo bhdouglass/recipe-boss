@@ -18,6 +18,10 @@ npm run build
 npm run build --report
 ```
 
+## Special Thanks
+
+- Thanks to Joan CiberSheep for the awesome icon!
+
 ## License
 
 Copyright (C) 2018 [Brian Douglass](http://bhdouglass.com/)
