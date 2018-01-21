@@ -41,6 +41,15 @@
                 </li>
             </ul>
         </div>
+
+        <!--
+        <div class="row">
+            <a class="p-button--neutral u-float-right" @click="refresh()">
+                <i class="fa fa-refresh"></i>
+                Refresh
+            </a>
+        </div>
+        -->
     </div>
 </template>
 
@@ -73,6 +82,9 @@ export default {
                 });
                 this.loading = false;
             });
+        },
+        refresh() {
+            storage.refresh().then(this.search);
         },
     },
     watch: {

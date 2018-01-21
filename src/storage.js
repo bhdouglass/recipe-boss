@@ -42,7 +42,7 @@ let Recipe = {
                 delete: privateClient.remove.bind(privateClient),
 
                 list: () => {
-                    return privateClient.getAll('');
+                    return privateClient.getAll('/');
                 },
             },
         };
@@ -53,7 +53,6 @@ let remoteStorage = new RemoteStorage({
     changeEvents: {local: true, remote: true},
     modules: [Recipe],
     logging: (process.env.NODE_ENV == 'development'),
-    cache: false, // TODO figure out why caching doesn't update with getAll
 });
 remoteStorage.access.claim('recipes', 'rw');
 remoteStorage.setApiKeys({
@@ -79,8 +78,6 @@ function loadMetadata() {
     });
 }
 
-let readyPromise = loadMetadata();
-
 remoteStorage.on('disconnected', () => {
     metadata = {};
 
@@ -88,13 +85,13 @@ remoteStorage.on('disconnected', () => {
 });
 
 remoteStorage.on('connected', () => {
-    readyPromise = loadMetadata().then(() => {
+    loadMetadata().then(() => {
         EventBus.$emit('reload');
     });
 });
 
 remoteStorage.recipes.on('change', () => {
-    readyPromise = loadMetadata().then(() => {
+    loadMetadata().then(() => {
         EventBus.$emit('reload');
     });
 });
@@ -128,16 +125,19 @@ export default {
         return remoteStorage.recipes.find(id);
     },
     search(term) {
-        return readyPromise.then(() => {
+        return new Promise((resolve) => {
             let results = [];
             let metadataValues = Object.values(metadata);
             for (let i = 0; i < metadataValues.length; i++) {
                 let result = metadataValues[i];
 
                 if (term) {
+                    let title = result.title ? result.title.toLowerCase() : '';
+                    let description = result.description ? result.description.toLowerCase() : '';
+
                     if (
-                        result.title.toLowerCase().indexOf(term.toLowerCase()) >= 0 ||
-                        result.description.toLowerCase().indexOf(term.toLowerCase()) >= 0
+                        title.indexOf(term.toLowerCase()) >= 0 ||
+                        description.indexOf(term.toLowerCase()) >= 0
                     ) {
                         results.push(result);
                     }
@@ -158,7 +158,11 @@ export default {
                 return 0;
             });
 
-            return results;
+            resolve(results);
         });
+    },
+
+    refresh() {
+        return loadMetadata();
     },
 };

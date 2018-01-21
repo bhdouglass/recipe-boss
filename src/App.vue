@@ -5,8 +5,6 @@
                 <div class="p-navigation__banner">
                     <div class="p-navigation__logo">
                         <router-link :to="{name: 'list'}" class="p-navigation__link">
-                            <img src="/static/logo.svg" alt="" class="p-navigation__image" />
-                            &nbsp;
                             Recipe Manager (beta)
                         </router-link>
                     </div>
