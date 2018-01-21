@@ -55,6 +55,7 @@
 
 <script>
 import storage from '@/storage';
+import utils from '@/utils';
 
 export default {
     name: 'List',
@@ -77,7 +78,7 @@ export default {
             this.loading = true;
             storage.search(this.term).then((results) => {
                 this.results = results.map((result) => {
-                    result.proxyImage = `https://images.weserv.nl/?url=${encodeURI(result.image).replace('http://', '').replace('https://', '')}`;
+                    result.proxyImage = utils.imageUrl(result.image);
                     return result;
                 });
                 this.loading = false;

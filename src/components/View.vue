@@ -29,11 +29,15 @@
                     </li>
                 </ul>
                 <ul class="p-inline-list--middot">
-                    <li class="p-inline-list__item" v-if="recipe.source">
+                    <li class="p-inline-list__item" v-if="recipe.source && (recipe.source.startsWith('https://') || recipe.source.startsWith('http://'))">
                         <a :href="recipe.source">
                             Source <i class="fa fa-external-link"></i>
                         </a>
                     </li>
+                    <li class="p-inline-list__item" v-if="recipe.source && !recipe.source.startsWith('https://') && !recipe.source.startsWith('http://')">
+                        Source: {{recipe.source}}
+                    </li>
+
                     <li class="p-inline-list__item">
                         <router-link :to="{name: 'edit', params: {id: recipe.id}}">
                             Edit <i class="fa fa-edit"></i>
@@ -77,6 +81,7 @@
 
 <script>
 import storage from '@/storage';
+import utils from '@/utils';
 
 export default {
     name: 'ViewRecipe',
@@ -145,7 +150,7 @@ export default {
         image() {
             let image = '';
             if (this.recipe && this.recipe.image) {
-                image = `https://images.weserv.nl/?url=${encodeURI(this.recipe.image).replace('http://', '').replace('https://', '')}`;
+                image = utils.imageUrl(this.recipe.image);
             }
 
             return image;
