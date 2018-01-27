@@ -24,7 +24,7 @@
                     <input type="text" id="source" class="p-form__control" :disabled="saving" v-model="recipe.source" />
                 </div>
 
-                <a @click="extract()" class="p-button--positive" v-if="is_new && !error">Extract Recipe</a>
+                <a @click="extract()" class="p-button--positive" v-if="is_new && !error && recipe.source && recipe.source.startsWith('http')">Extract Recipe</a>
 
                 <div class="p-form__group">
                     <label for="description" class="p-form__label">Description</label>
