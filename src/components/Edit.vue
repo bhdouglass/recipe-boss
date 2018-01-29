@@ -1,12 +1,21 @@
 <template>
     <div class="row">
-        <div class="back">
-            <router-link :to="{name: 'list'}"><i class="fa fa-chevron-left"></i></router-link>
-            <router-link :to="{name: 'list'}">Back</router-link>
-        </div>
+        <div v-if="is_new">
+            <div class="back">
+                <router-link :to="{name: 'list'}"><i class="fa fa-chevron-left"></i></router-link>
+                <router-link :to="{name: 'list'}">Back</router-link>
+            </div>
 
-        <h1 v-if="is_new">New Recipe</h1>
-        <h1 v-else>Edit Recipe</h1>
+            <h1>New Recipe</h1>
+        </div>
+        <div v-else>
+            <div class="back">
+                <router-link :to="{name: 'view', params: {id: $route.params.id}}"><i class="fa fa-chevron-left"></i></router-link>
+                <router-link :to="{name: 'view', params: {id: $route.params.id}}">Back</router-link>
+            </div>
+
+            <h1>Edit Recipe</h1>
+        </div>
 
         <div class="row center" v-if="loading">
             <i class="fa fa-spinner fa-spin fa-4x"></i>
@@ -61,7 +70,15 @@
                     <input type="url" id="image" class="p-form__control" :disabled="saving" v-model="recipe.image" />
                 </div>
 
-                <!-- TODO star rating -->
+                <div class="p-form__group">
+                    <label for="image" class="p-form__label">Rating</label>
+
+                    <i class="fa fa-2x star" :class="{'fa-star': recipe.rating >= 1, 'fa-star-o': recipe.rating < 1}" @click="recipe.rating = 1"></i>
+                    <i class="fa fa-2x star" :class="{'fa-star': recipe.rating >= 2, 'fa-star-o': recipe.rating < 2}" @click="recipe.rating = 2"></i>
+                    <i class="fa fa-2x star" :class="{'fa-star': recipe.rating >= 3, 'fa-star-o': recipe.rating < 3}" @click="recipe.rating = 3"></i>
+                    <i class="fa fa-2x star" :class="{'fa-star': recipe.rating >= 4, 'fa-star-o': recipe.rating < 4}" @click="recipe.rating = 4"></i>
+                    <i class="fa fa-2x star" :class="{'fa-star': recipe.rating >= 5, 'fa-star-o': recipe.rating < 5}" @click="recipe.rating = 5"></i>
+                </div>
             </form>
 
             <a class="p-button--positive" @click="save()" :disabled="saving">
@@ -69,7 +86,12 @@
                 Save
             </a>
 
-            <router-link class="p-button--neutral" :to="{name: 'list'}" :disabled="saving">
+            <router-link class="p-button--neutral" :to="{name: 'list'}" :disabled="saving" v-if="is_new">
+                <i class="fa fa-times"></i>
+                Cancel
+            </router-link>
+
+            <router-link class="p-button--neutral" :to="{name: 'view', params: {id: $route.params.id}}" :disabled="saving" v-else>
                 <i class="fa fa-times"></i>
                 Cancel
             </router-link>
@@ -101,6 +123,10 @@ export default {
         load() {
             this.loading = true;
             storage.find(this.$route.params.id).then((recipe) => {
+                if (!recipe.rating) {
+                    recipe.rating = 0;
+                }
+
                 this.recipe = recipe;
                 this.loading = false;
             });
@@ -137,5 +163,10 @@ export default {
 
 h1 {
     margin-top: 2rem;
+}
+
+.star {
+    cursor: pointer;
+    padding-right: 0.1em;
 }
 </style>

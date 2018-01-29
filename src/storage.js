@@ -78,6 +78,7 @@ function loadMetadata() {
                     image: recipe.image,
                     title: recipe.title,
                     description: recipe.description,
+                    rating: recipe.rating,
                 };
             }
         });

@@ -17,6 +17,13 @@
 
                 <h3 class="p-card__title">
                     {{recipe.title}}
+
+                    <!-- TODO make this a component -->
+                    <i class="fa" :class="{'fa-star': recipe.rating >= 1, 'fa-star-o': recipe.rating < 1}"></i>
+                    <i class="fa" :class="{'fa-star': recipe.rating >= 2, 'fa-star-o': recipe.rating < 2}"></i>
+                    <i class="fa" :class="{'fa-star': recipe.rating >= 3, 'fa-star-o': recipe.rating < 3}"></i>
+                    <i class="fa" :class="{'fa-star': recipe.rating >= 4, 'fa-star-o': recipe.rating < 4}"></i>
+                    <i class="fa" :class="{'fa-star': recipe.rating >= 5, 'fa-star-o': recipe.rating < 5}"></i>
                 </h3>
                 <p class="p-card__content" v-if="recipe.description">{{recipe.description}}</p>
 
