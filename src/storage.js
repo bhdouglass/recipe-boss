@@ -49,11 +49,19 @@ let Recipe = {
     },
 };
 
+if (process.env.APP_MODE) {
+    // Hack the redirect url so we don't try to redirect to a file:// url
+    RemoteStorage.Authorize.getLocation = function() {
+        return 'https://recipes.bhdouglass.com';
+    };
+}
+
 let remoteStorage = new RemoteStorage({
     changeEvents: {local: true, remote: true},
     modules: [Recipe],
     logging: (process.env.NODE_ENV == 'development'),
 });
+
 remoteStorage.access.claim('recipes', 'rw');
 remoteStorage.setApiKeys({
     dropbox: process.env.DROPBOX_KEY,

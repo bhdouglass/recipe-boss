@@ -7,7 +7,7 @@ import View from '@/components/View';
 Vue.use(Router);
 
 export default new Router({
-    mode: 'history',
+    mode: process.env.APP_MODE ? null : 'history',
     routes: [
         {
             path: '/',
