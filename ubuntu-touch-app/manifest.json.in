@@ -1,0 +1,16 @@
+{
+    "name": "recipe-boss.bhdouglass",
+    "description": "Make your recipes work for you",
+    "architecture": "@CLICK_ARCH@",
+    "title": "Recipe Boss",
+    "hooks": {
+        "recipe-boss": {
+            "apparmor": "recipe-boss.apparmor",
+            "desktop":  "recipe-boss.desktop",
+            "urls": "recipe-boss.url-dispatcher"
+        }
+    },
+    "version": "1.0.0",
+    "maintainer": "Brian Douglass <bhdouglass@gmail.com>",
+    "framework" : "ubuntu-sdk-15.04.6"
+}

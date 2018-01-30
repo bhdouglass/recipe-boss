@@ -52,7 +52,16 @@ let Recipe = {
 if (process.env.APP_MODE) {
     // Hack the redirect url so we don't try to redirect to a file:// url
     RemoteStorage.Authorize.getLocation = function() {
-        return 'https://recipes.bhdouglass.com';
+        // Emulate window.location
+        function Location(href) {
+            this.href = href;
+        }
+
+        Location.prototype.toString = function() {
+            return this.href;
+        };
+
+        return new Location(`https://recipes.bhdouglass.com/${window.location.hash}`);
     };
 }
 
