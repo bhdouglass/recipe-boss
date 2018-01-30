@@ -1,6 +1,8 @@
 # Recipe Boss
 
-A simple recipe manager that makes your recipes work for you
+A simple recipe manager that makes your recipes work for you.
+
+[Get the app for Ubuntu Touch](https://open.uappexplorer.com/app/recipe-boss.bhdouglass).
 
 ## Development
 
