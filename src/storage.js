@@ -49,21 +49,20 @@ let Recipe = {
     },
 };
 
-if (process.env.APP_MODE) {
-    // Hack the redirect url so we don't try to redirect to a file:// url
-    RemoteStorage.Authorize.getLocation = function() {
-        // Emulate window.location
-        function Location(href) {
-            this.href = href;
-        }
+// Hack the redirect url so we don't try to redirect to a file:// url
+// AND so the redirect url isn't the full domain + path
+RemoteStorage.Authorize.getLocation = function() {
+    // Emulate window.location
+    function Location(href) {
+        this.href = href;
+    }
 
-        Location.prototype.toString = function() {
-            return this.href;
-        };
-
-        return new Location(`https://recipes.bhdouglass.com/${window.location.hash}`);
+    Location.prototype.toString = function() {
+        return this.href;
     };
-}
+
+    return new Location(`https://recipes.bhdouglass.com/${window.location.hash}`);
+};
 
 let remoteStorage = new RemoteStorage({
     changeEvents: {local: true, remote: true},
