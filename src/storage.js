@@ -119,6 +119,7 @@ export default {
             image: recipe.image,
             title: recipe.title,
             description: recipe.description,
+            rating: recipe.rating,
         };
 
         return remoteStorage.recipes.add(recipe).then(() => {
