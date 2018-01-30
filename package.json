@@ -1,7 +1,7 @@
 {
-  "name": "recipe-manager",
+  "name": "recipe-boss",
   "version": "1.0.0",
-  "description": "Simple recipe manager",
+  "description": "Make your recipes work for you",
   "author": "Brian Douglass <bhdouglass@gmail.com>",
   "private": true,
   "scripts": {

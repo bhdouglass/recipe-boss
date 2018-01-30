@@ -1,8 +1,8 @@
-# Recipe Manager
+# Recipe Boss
 
-Simple recipe manager
+A simple recipe manager that makes your recipes work for you
 
-## Build Setup
+## Development
 
 ``` bash
 # install dependencies

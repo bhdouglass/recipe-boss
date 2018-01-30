@@ -5,7 +5,7 @@
                 <div class="p-navigation__banner">
                     <div class="p-navigation__logo">
                         <router-link :to="{name: 'list'}" class="p-navigation__link">
-                            Recipe Manager (beta)
+                            Recipe Boss (beta)
                         </router-link>
                     </div>
                 </div>
@@ -24,7 +24,7 @@
                             <a class="p-footer__link" href="http://bhdouglass.com" target="_blank">Created by Brian Douglass</a>
                         </li>
                         <li class="p-footer__item">
-                            <a class="p-footer__link" href="https://github.com/bhdouglass/recipe-manager" target="_blank">Fork this on Github</a>
+                            <a class="p-footer__link" href="https://github.com/bhdouglass/recipe-boss" target="_blank">Fork this on Github</a>
                         </li>
                     </ul>
                 </nav>
