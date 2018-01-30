@@ -10,7 +10,7 @@
             "urls": "recipe-boss.url-dispatcher"
         }
     },
-    "version": "0.1.0",
+    "version": "0.1.1",
     "maintainer": "Brian Douglass <bhdouglass@gmail.com>",
     "framework" : "ubuntu-sdk-15.04.6"
 }
