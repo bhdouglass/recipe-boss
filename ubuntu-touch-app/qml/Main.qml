@@ -51,7 +51,10 @@ MainView {
                 var url = request.url.toString();
 
                 console.log('navigation requsted: ' + url);
-                if (url.indexOf('https://www.dropbox.com/oauth2') === 0 || url.indexOf('https://accounts.google.com/o/oauth2') === 0) {
+                if (
+                    url.indexOf('https://www.dropbox.com/') === 0 ||
+                    url.indexOf('https://accounts.google.com/') === 0
+                ) {
                     //Do nothing
                 }
                 else if (url.indexOf('https://recipes.bhdouglass.com/') === 0) {
@@ -66,6 +69,7 @@ MainView {
 
             Component.onCompleted: {
                 preferences.localStorageEnabled = true;
+                preferences.appCacheEnable = true;
 
                 webview.url = Qt.resolvedUrl('../www/index.html');
             }

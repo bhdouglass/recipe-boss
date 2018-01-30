@@ -11,19 +11,21 @@
 
         <div v-if="!loading">
             <div class="p-card">
-                <header class="p-card__header" v-if="recipe.image">
+                <header class="p-card__header" v-if="recipe && recipe.image">
                     <img :src="image" :alt="recipe.title">
                 </header>
 
                 <h3 class="p-card__title">
                     {{recipe.title}}
 
-                    <!-- TODO make this a component -->
-                    <i class="fa" :class="{'fa-star': recipe.rating >= 1, 'fa-star-o': recipe.rating < 1}"></i>
-                    <i class="fa" :class="{'fa-star': recipe.rating >= 2, 'fa-star-o': recipe.rating < 2}"></i>
-                    <i class="fa" :class="{'fa-star': recipe.rating >= 3, 'fa-star-o': recipe.rating < 3}"></i>
-                    <i class="fa" :class="{'fa-star': recipe.rating >= 4, 'fa-star-o': recipe.rating < 4}"></i>
-                    <i class="fa" :class="{'fa-star': recipe.rating >= 5, 'fa-star-o': recipe.rating < 5}"></i>
+                    <span v-if="recipe.rating">
+                        <!-- TODO make this a component -->
+                        <i class="fa" :class="{'fa-star': recipe.rating >= 1, 'fa-star-o': recipe.rating < 1}"></i>
+                        <i class="fa" :class="{'fa-star': recipe.rating >= 2, 'fa-star-o': recipe.rating < 2}"></i>
+                        <i class="fa" :class="{'fa-star': recipe.rating >= 3, 'fa-star-o': recipe.rating < 3}"></i>
+                        <i class="fa" :class="{'fa-star': recipe.rating >= 4, 'fa-star-o': recipe.rating < 4}"></i>
+                        <i class="fa" :class="{'fa-star': recipe.rating >= 5, 'fa-star-o': recipe.rating < 5}"></i>
+                    </span>
                 </h3>
                 <p class="p-card__content" v-if="recipe.description">{{recipe.description}}</p>
 
@@ -109,6 +111,8 @@ export default {
     methods: {
         load() {
             storage.find(this.$route.params.id).then((recipe) => {
+                // TODO use vue-head to update the title
+
                 this.recipe = recipe;
                 this.loading = false;
             });
@@ -124,7 +128,7 @@ export default {
     computed: {
         ingredients() {
             let ingredients = [];
-            if (this.recipe) {
+            if (this.recipe && this.recipe.ingredients) {
                 ingredients = this.recipe.ingredients.split('\n').filter((ingredient) => {
                     return ingredient.trim();
                 });
@@ -146,7 +150,7 @@ export default {
         },
         directions() {
             let directions = [];
-            if (this.recipe) {
+            if (this.recipe && this.recipe.directions) {
                 directions = this.recipe.directions.split('\n').filter((direction) => {
                     return direction.trim();
                 });

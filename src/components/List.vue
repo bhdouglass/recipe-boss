@@ -36,11 +36,14 @@
 
                         <p class="p-matrix__desc">
                             {{result.description}}
-                            <i class="fa" :class="{'fa-star': result.rating >= 1, 'fa-star-o': result.rating < 1}"></i>
-                            <i class="fa" :class="{'fa-star': result.rating >= 2, 'fa-star-o': result.rating < 2}"></i>
-                            <i class="fa" :class="{'fa-star': result.rating >= 3, 'fa-star-o': result.rating < 3}"></i>
-                            <i class="fa" :class="{'fa-star': result.rating >= 4, 'fa-star-o': result.rating < 4}"></i>
-                            <i class="fa" :class="{'fa-star': result.rating >= 5, 'fa-star-o': result.rating < 5}"></i>
+
+                            <span v-if="result.rating">
+                                <i class="fa" :class="{'fa-star': result.rating >= 1, 'fa-star-o': result.rating < 1}"></i>
+                                <i class="fa" :class="{'fa-star': result.rating >= 2, 'fa-star-o': result.rating < 2}"></i>
+                                <i class="fa" :class="{'fa-star': result.rating >= 3, 'fa-star-o': result.rating < 3}"></i>
+                                <i class="fa" :class="{'fa-star': result.rating >= 4, 'fa-star-o': result.rating < 4}"></i>
+                                <i class="fa" :class="{'fa-star': result.rating >= 5, 'fa-star-o': result.rating < 5}"></i>
+                            </span>
                         </p>
                     </div>
                 </li>

@@ -108,7 +108,9 @@ export default {
     data() {
         return {
             is_new: !this.$route.params.id,
-            recipe: {},
+            recipe: {
+                rating: 0,
+            },
             saving: false,
             loading: false,
             error: false,
