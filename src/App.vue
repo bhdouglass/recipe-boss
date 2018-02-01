@@ -62,15 +62,50 @@ export default {
     margin-top: 0;
 }
 
+#remotestorage-widget .rs-widget.rs-state-choose {
+    margin-top: 10px;
+}
+
 #remotestorage-widget .rs-button {
     margin-left: 0;
 }
 
 #remotestorage-widget .rs-button-small {
     height: 40px;
+    margin-top: 0;
+}
+
+#remotestorage-widget .rs-box.rs-box-initial.rs-selected .rs-sub-headline {
+    display: none;
+}
+
+#remotestorage-widget .rs-box.rs-box-initial.rs-selected:after {
+    content: "To sync your recipes";
+    color: #666;
+    font-size: 0.92em;
+    height: 1.2em;
 }
 
 #remotestorage-widget .rs-closed {
     margin-top: -20px;
+}
+
+@media (max-width: 459px) {
+    #remotestorage-widget {
+        top: 0.25em;
+    }
+
+    #remotestorage-widget .rs-closed {
+        margin-top: -10px;
+    }
+
+    #remotestorage-widget .rs-widget.rs-state-initial {
+        padding: 5px 10px;
+        margin-left: 165px;
+    }
+
+    #remotestorage-widget .rs-button-small {
+        width: 40px;
+    }
 }
 </style>
