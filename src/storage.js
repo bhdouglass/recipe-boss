@@ -21,14 +21,13 @@ let Recipe = {
             },
             required: [
                 'title',
-                'ingredients',
             ],
         });
 
         return {
             exports: {
                 init: () => {
-                    privateClient.cache('');
+                    privateClient.cache('/');
                 },
 
                 on: privateClient.on,
@@ -49,25 +48,27 @@ let Recipe = {
     },
 };
 
-// Hack the redirect url so we don't try to redirect to a file:// url
-// AND so the redirect url isn't the full domain + path
-RemoteStorage.Authorize.getLocation = function() {
-    // Emulate window.location
-    function Location(href) {
-        this.href = href;
-    }
+if (process.env.NODE_ENV != 'development') {
+    // Hack the redirect url so we don't try to redirect to a file:// url
+    // AND so the redirect url isn't the full domain + path
+    RemoteStorage.Authorize.getLocation = function() {
+        // Emulate window.location
+        function Location(href) {
+            this.href = href;
+        }
 
-    Location.prototype.toString = function() {
-        return this.href;
+        Location.prototype.toString = function() {
+            return this.href;
+        };
+
+        return new Location(`https://recipes.bhdouglass.com/${window.location.hash}`);
     };
-
-    return new Location(`https://recipes.bhdouglass.com/${window.location.hash}`);
-};
+}
 
 let remoteStorage = new RemoteStorage({
     changeEvents: {local: true, remote: true},
     modules: [Recipe],
-    logging: (process.env.NODE_ENV == 'development'),
+    // logging: (process.env.NODE_ENV == 'development'),
 });
 
 remoteStorage.access.claim('recipes', 'rw');
@@ -91,12 +92,24 @@ function loadMetadata() {
             }
         });
 
+        window.localStorage.setItem('metadata', JSON.stringify(metadata));
         return metadata;
     });
 }
 
+let localStorageMetadata = window.localStorage.getItem('metadata');
+if (localStorageMetadata) {
+    try {
+        metadata = JSON.parse(localStorageMetadata);
+    }
+    catch (e) {
+        metadata = {};
+    }
+}
+
 remoteStorage.on('disconnected', () => {
     metadata = {};
+    window.localStorage.removeItem('metadata');
 
     EventBus.$emit('reload');
 });
@@ -129,6 +142,7 @@ export default {
             description: recipe.description,
             rating: recipe.rating,
         };
+        window.localStorage.setItem('metadata', JSON.stringify(metadata));
 
         return remoteStorage.recipes.add(recipe).then(() => {
             return recipe;
@@ -136,6 +150,7 @@ export default {
     },
     remove(id) {
         delete metadata[id];
+        window.localStorage.setItem('metadata', JSON.stringify(metadata));
 
         return remoteStorage.recipes.delete(id);
     },
