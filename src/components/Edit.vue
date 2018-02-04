@@ -146,6 +146,7 @@ export default {
             if (this.recipe.source) {
                 this.loading = true;
                 api.extract(this.recipe.source).then((recipe) => {
+                    recipe.rating = 0;
                     this.recipe = recipe;
                     this.loading = false;
                 }).catch(() => {

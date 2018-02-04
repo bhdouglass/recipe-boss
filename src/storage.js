@@ -135,24 +135,38 @@ export default {
             recipe.id = id;
         }
 
-        metadata[recipe.id] = {
-            id: recipe.id,
-            image: recipe.image,
-            title: recipe.title,
-            description: recipe.description,
-            rating: recipe.rating,
-        };
-        window.localStorage.setItem('metadata', JSON.stringify(metadata));
+        if (recipe.total_time) {
+            recipe.total_time = parseInt(recipe.total_time, 10);
+            if (isNaN(recipe.total_time)) {
+                recipe.total_time = null;
+            }
+        }
+
+        if (recipe.prep_time) {
+            recipe.prep_time = parseInt(recipe.prep_time, 10);
+            if (isNaN(recipe.prep_time)) {
+                recipe.prep_time = null;
+            }
+        }
 
         return remoteStorage.recipes.add(recipe).then(() => {
+            metadata[recipe.id] = {
+                id: recipe.id,
+                image: recipe.image,
+                title: recipe.title,
+                description: recipe.description,
+                rating: recipe.rating,
+            };
+            window.localStorage.setItem('metadata', JSON.stringify(metadata));
+
             return recipe;
         });
     },
     remove(id) {
-        delete metadata[id];
-        window.localStorage.setItem('metadata', JSON.stringify(metadata));
-
-        return remoteStorage.recipes.delete(id);
+        return remoteStorage.recipes.delete(id).then(() => {
+            delete metadata[id];
+            window.localStorage.setItem('metadata', JSON.stringify(metadata));
+        });
     },
     find(id) {
         return remoteStorage.recipes.find(id);
