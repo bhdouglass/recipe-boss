@@ -42,7 +42,12 @@
 
                 <div class="p-form__group">
                     <label for="ingredients" class="p-form__label">Ingredients</label>
-                    <textarea id="ingredients" class="p-form__control" :disabled="saving" v-model="recipe.ingredients" rows="10"></textarea>
+                    <div class="p-form__control u-clearfix">
+                        <textarea id="ingredients" class="p-form__control" :disabled="saving" v-model="recipe.ingredients" rows="10"></textarea>
+                        <p class="p-form-help-text">
+                            Use a # to group ingredients, for example <b># Dressing</b>, <b># Salad</b>
+                        </p>
+                    </div>
                 </div>
 
                 <div class="p-form__group">

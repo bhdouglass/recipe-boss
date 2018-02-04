@@ -73,9 +73,7 @@
                 <h3 class="p-card__title">Directions</h3>
                 <p class="p-card__content">
                     <ol>
-                        <li v-for="(direction, index) in directions">
-                            {{direction}}
-                        </li>
+                        <li v-for="(direction, index) in directions" v-html="direction"></li>
                     </ol>
                 </p>
             </div>
@@ -134,6 +132,10 @@ export default {
                 });
 
                 ingredients = ingredients.map((ingredient) => {
+                    if (ingredient[0] == '#') {
+                        return `<h4>${ingredient.substring(1).trim()}<h4>`;
+                    }
+
                     let parts = ingredient.split(' ').map((part) => {
                         if (!isNaN(part.replace('/', ''))) {
                             return `<b>${part}</b>`;
@@ -141,7 +143,6 @@ export default {
 
                         return part;
                     });
-
                     return parts.join(' ');
                 });
             }
