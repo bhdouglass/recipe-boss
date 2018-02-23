@@ -1,5 +1,10 @@
 <template>
     <div class="row">
+        <router-link :to="{name: 'new'}" class="p-button--positive u-float-right">
+            <i class="fa fa-plus"></i>
+            New Recipe
+        </router-link>
+
         <div class="back">
             <router-link :to="{name: 'list'}"><i class="fa fa-chevron-left"></i></router-link>
             <router-link :to="{name: 'list'}">Back</router-link>
@@ -92,9 +97,14 @@ import utils from '@/utils';
 
 export default {
     name: 'ViewRecipe',
+    head: {
+        title: function() {
+            return {inner: this.recipe ? this.recipe.title : ''};
+        },
+    },
     data() {
         return {
-            recipe: {},
+            recipe: null,
             loading: false,
         };
     },
@@ -109,10 +119,10 @@ export default {
     methods: {
         load() {
             storage.find(this.$route.params.id).then((recipe) => {
-                // TODO use vue-head to update the title
-
                 this.recipe = recipe;
                 this.loading = false;
+
+                this.$emit('updateHead');
             });
             // TODO error handling
         },
@@ -172,6 +182,10 @@ export default {
 </script>
 
 <style scoped>
+.back {
+    margin-top: 0.5em;
+}
+
 .row {
     margin-top: 0.5em;
 }

@@ -110,6 +110,11 @@ import api from '@/api';
 
 export default {
     name: 'Edit',
+    head: {
+        title: function() {
+            return {inner: this.is_new ? 'New Recipe' : `Edit ${this.recipe.title}`};
+        },
+    },
     data() {
         return {
             is_new: !this.$route.params.id,
@@ -134,8 +139,11 @@ export default {
                     recipe.rating = 0;
                 }
 
+
                 this.recipe = recipe;
                 this.loading = false;
+
+                this.$emit('updateHead');
             });
             // TODO error handling
         },

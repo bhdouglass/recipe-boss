@@ -1,6 +1,7 @@
 import 'font-awesome/css/font-awesome.min.css';
 
 import Vue from 'vue';
+import VueHead from 'vue-head';
 import App from './App';
 import router from './router';
 import EventBus from './bus';
@@ -13,6 +14,11 @@ Object.defineProperties(Vue.prototype, {
             return EventBus;
         },
     },
+});
+
+Vue.use(VueHead, {
+    separator: '-',
+    complement: 'Recipe Boss',
 });
 
 /* eslint-disable no-new */

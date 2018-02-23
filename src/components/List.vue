@@ -67,6 +67,9 @@ import utils from '@/utils';
 
 export default {
     name: 'List',
+    head: {
+        title: {inner: 'Recipe List'},
+    },
     data() {
         return {
             loading: true,
