@@ -2,6 +2,7 @@ import 'font-awesome/css/font-awesome.min.css';
 
 import Vue from 'vue';
 import VueHead from 'vue-head';
+import VModal from 'vue-js-modal';
 import App from './App';
 import router from './router';
 import EventBus from './bus';
@@ -20,6 +21,7 @@ Vue.use(VueHead, {
     separator: '-',
     complement: 'Recipe Boss',
 });
+Vue.use(VModal);
 
 /* eslint-disable no-new */
 new Vue({
