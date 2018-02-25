@@ -122,6 +122,9 @@ div.v--modal-overlay {
 }
 
 div.v--modal {
+    /* important is necessary here because they get setup in the element's style */
+
     height: auto !important;
+    width: auto !important;
 }
 </style>
