@@ -5,7 +5,7 @@
                 <div class="p-navigation__banner">
                     <div class="p-navigation__logo">
                         <router-link :to="{name: 'list'}" class="p-navigation__link">
-                            Recipe Boss (beta)
+                            Recipe Boss
                         </router-link>
                     </div>
                 </div>

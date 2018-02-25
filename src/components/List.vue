@@ -38,21 +38,11 @@
                             {{result.description}}
 
                             <star-rating :rating="result.rating" v-if="result.rating"></star-rating>
-
                         </p>
                     </div>
                 </li>
             </ul>
         </div>
-
-        <!--
-        <div class="row">
-            <a class="p-button--neutral u-float-right" @click="refresh()">
-                <i class="fa fa-refresh"></i>
-                Refresh
-            </a>
-        </div>
-        -->
     </div>
 </template>
 

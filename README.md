@@ -2,7 +2,7 @@
 
 A simple recipe manager that makes your recipes work for you.
 
-[Get the app for Ubuntu Touch](https://open.uappexplorer.com/app/recipe-boss.bhdouglass).
+[Get the app for Ubuntu Touch](https://open-store.io/app/recipe-boss.bhdouglass).
 
 ## Development
 
@@ -11,13 +11,14 @@ A simple recipe manager that makes your recipes work for you.
 npm install
 
 # serve with hot reload at localhost:8080
-npm run dev
+./dev.sh
 
-# build for production with minification
-npm run build
+# deploy to surge.sh
+./deploy.sh
 
-# build for production and view the bundle analyzer report
-npm run build --report
+# build ubuntu touch app
+./deploy-app.
+cd ubuntu-touch-app && clickable
 ```
 
 ## Special Thanks
