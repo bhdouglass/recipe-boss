@@ -108,4 +108,20 @@ export default {
         width: 40px;
     }
 }
+
+div.v--modal-overlay {
+    margin-top: 0;
+}
+
+.v--modal-overlay div {
+    margin-top: 0;
+}
+
+.v--modal .p-strip {
+    padding: 4rem;
+}
+
+div.v--modal {
+    height: auto !important;
+}
 </style>

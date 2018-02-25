@@ -95,8 +95,18 @@
                     Are you sure your want to delete this recipe?
                 </h3>
 
-                <button class="p-button--neutral" @click="closeConfirmRemove()">Cancel</button>
+                <button class="p-button--neutral" @click="$modal.hide('confirm-remove')">Cancel</button>
                 <button class="p-button--negative" @click="remove()">Delete</button>
+            </div>
+        </modal>
+
+        <modal name="error-message">
+            <div class="p-strip">
+                <h3>
+                    Error: {{errorMessage}}
+                </h3>
+
+                <button class="p-button--neutral" @click="closeErrorMessage()">Ok</button>
             </div>
         </modal>
     </div>
@@ -115,7 +125,7 @@ export default {
     },
     data() {
         return {
-            recipe: null,
+            recipe: {},
             loading: false,
         };
     },
@@ -130,18 +140,32 @@ export default {
     methods: {
         load() {
             storage.find(this.$route.params.id).then((recipe) => {
-                this.recipe = recipe;
-                this.loading = false;
+                console.log(recipe);
+                if (recipe) {
+                    this.recipe = recipe;
 
-                this.$emit('updateHead');
+                    this.$emit('updateHead');
+                }
+                else {
+                    this.errorMessage = 'Recipe not found.';
+                    this.$modal.show('error-message');
+                }
+
+                this.loading = false;
+            }).catch((err) => {
+                console.error(err);
+                if (err.getMessage) {
+                    this.errorMessage = err.getMessage();
+                }
+                else {
+                    this.errorMessage = err;
+                }
+
+                this.$modal.show('error-message');
             });
-            // TODO error handling
         },
         confirmRemove() {
             this.$modal.show('confirm-remove');
-        },
-        closeConfirmRemove() {
-            this.$modal.hide('confirm-remove');
         },
         remove() {
             this.closeConfirmRemove();
@@ -149,6 +173,10 @@ export default {
             storage.remove(this.$route.params.id).then(() => {
                 this.$router.push({name: 'list'});
             });
+        },
+        closeErrorMessage() {
+            this.$modal.hide('error-message');
+            this.$router.push({name: 'list'});
         },
     },
     computed: {
@@ -219,17 +247,5 @@ export default {
 span {
     display: inline-block;
     margin-right: 1em;
-}
-
-div.v--modal-overlay {
-    margin-top: 0;
-}
-
-.v--modal-overlay div {
-    margin-top: 0;
-}
-
-.v--modal .p-strip {
-    padding: 5rem;
 }
 </style>

@@ -101,6 +101,16 @@
                 Cancel
             </router-link>
         </div>
+
+        <modal name="error-message">
+            <div class="p-strip">
+                <h3>
+                    Error: {{errorMessage}}
+                </h3>
+
+                <button class="p-button--neutral" @click="closeErrorMessage()">Ok</button>
+            </div>
+        </modal>
     </div>
 </template>
 
@@ -124,6 +134,7 @@ export default {
             saving: false,
             loading: false,
             error: false,
+            errorMessage: '',
         };
     },
     created() {
@@ -135,17 +146,31 @@ export default {
         load() {
             this.loading = true;
             storage.find(this.$route.params.id).then((recipe) => {
-                if (!recipe.rating) {
-                    recipe.rating = 0;
+                if (recipe) {
+                    if (!recipe.rating) {
+                        recipe.rating = 0;
+                    }
+
+                    this.recipe = recipe;
+                    this.$emit('updateHead');
+                }
+                else {
+                    this.errorMessage = 'Recipe not found.';
+                    this.$modal.show('error-message');
                 }
 
-
-                this.recipe = recipe;
                 this.loading = false;
+            }).catch((err) => {
+                console.error(err);
+                if (err.getMessage) {
+                    this.errorMessage = err.getMessage();
+                }
+                else {
+                    this.errorMessage = err;
+                }
 
-                this.$emit('updateHead');
+                this.$modal.show('error-message');
             });
-            // TODO error handling
         },
         save() {
             this.saving = true;
@@ -167,6 +192,13 @@ export default {
                     this.error = true;
                 });
             }
+        },
+        closeErrorMessage() {
+            this.is_new = true;
+            this.$emit('updateHead');
+
+            this.$modal.hide('error-message');
+            this.$router.push({name: 'new'});
         },
     },
 };
