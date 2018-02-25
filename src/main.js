@@ -6,6 +6,7 @@ import VModal from 'vue-js-modal';
 import App from './App';
 import router from './router';
 import EventBus from './bus';
+import StarRating from './components/StarRating';
 
 Vue.config.productionTip = false;
 
@@ -22,6 +23,8 @@ Vue.use(VueHead, {
     complement: 'Recipe Boss',
 });
 Vue.use(VModal);
+
+Vue.component('star-rating', StarRating);
 
 /* eslint-disable no-new */
 new Vue({

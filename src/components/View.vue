@@ -23,14 +23,7 @@
                 <h3 class="p-card__title">
                     {{recipe.title}}
 
-                    <span v-if="recipe.rating">
-                        <!-- TODO make this a component -->
-                        <i class="fa" :class="{'fa-star': recipe.rating >= 1, 'fa-star-o': recipe.rating < 1}"></i>
-                        <i class="fa" :class="{'fa-star': recipe.rating >= 2, 'fa-star-o': recipe.rating < 2}"></i>
-                        <i class="fa" :class="{'fa-star': recipe.rating >= 3, 'fa-star-o': recipe.rating < 3}"></i>
-                        <i class="fa" :class="{'fa-star': recipe.rating >= 4, 'fa-star-o': recipe.rating < 4}"></i>
-                        <i class="fa" :class="{'fa-star': recipe.rating >= 5, 'fa-star-o': recipe.rating < 5}"></i>
-                    </span>
+                    <star-rating :rating="recipe.rating" v-if="recipe.rating"></star-rating>
                 </h3>
                 <p class="p-card__content" v-if="recipe.description">{{recipe.description}}</p>
 
@@ -127,6 +120,7 @@ export default {
         return {
             recipe: {},
             loading: false,
+            errorMessage: '',
         };
     },
     created() {
@@ -140,7 +134,6 @@ export default {
     methods: {
         load() {
             storage.find(this.$route.params.id).then((recipe) => {
-                console.log(recipe);
                 if (recipe) {
                     this.recipe = recipe;
 
