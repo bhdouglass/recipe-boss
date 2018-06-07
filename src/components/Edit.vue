@@ -217,4 +217,9 @@ h1 {
     cursor: pointer;
     padding-right: 0.1em;
 }
+
+.p-form__control textarea {
+    width: 100%;
+    max-width: 100%;
+}
 </style>
